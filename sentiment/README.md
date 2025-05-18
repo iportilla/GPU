@@ -91,6 +91,28 @@ python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU')
 
 TF_CPP_MIN_LOG_LEVEL=0 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 
+
+# Add NVIDIA repo
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /"
+sudo apt update
+
+
+sudo apt install -y cuda-toolkit-12-3 libcudnn8 libcudnn8-dev
+
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+source ~/.bashrc
+
+import tensorflow as tf
+print("TensorFlow version:", tf.__version__)
+print("Available GPUs:", tf.config.list_physical_devices("GPU"))
+
+TF_CPP_MIN_LOG_LEVEL=0 python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
 ```
 
 ## run test

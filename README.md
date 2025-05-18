@@ -63,5 +63,14 @@ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvi
 ## Step 5: Run PyTorch GPU test
 
 ```
-python gpu_test.py
+python code/gpu_test.py
+```
+
+## Expected output:
+
+```
+PyTorch version: 2.x
+CUDA available: True
+GPU device name: NVIDIA RTX A2000 Laptop GPU
+Matrix multiplication complete. Result shape: torch.Size([10000, 10000])
 ```

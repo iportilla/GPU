@@ -21,3 +21,47 @@ In PowerShell (Admin):
 wsl --install -d Ubuntu
 ```
 
+## Step 2: Install & configure drivers
+
+```bash
+wsl
+nvidia-smi
+```
+
+## Step 3: Install CUDA toolkit in WSL
+
+```bash
+sudo apt update
+sudo apt install -y build-essential
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt update
+sudo apt install -y cuda
+```
+
+## Step 4: Install Conda and PyTorch with CUDA
+
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
+restart terminal
+
+```bash
+conda create -n dl-gpu python=3.10
+conda activate dl-gpu
+```
+
+# Install PyTorch with CUDA support
+
+```bash
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+```
+
+## Step 5: Run PyTorch GPU test
+
+```
+python gpu_test.py
+```

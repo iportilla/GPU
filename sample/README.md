@@ -11,3 +11,18 @@ This example demonstrates training a simple Convolutional Neural Network (CNN) o
 ```bash
 pip install -r requirements.txt
 ```
+## Run code
+
+```bash
+python sample\train_mnist.py
+```
+
+## Example output
+
+```
+Using device: cuda
+Epoch 1, Loss: 0.2123
+Epoch 2, Loss: 0.0621
+Epoch 3, Loss: 0.0457
+Test accuracy: 98.76%
+```

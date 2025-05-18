@@ -2,6 +2,8 @@
 
 This repo shows how to configure a Windows laptop with an NVIDIA GPU (e.g., A2000) using **WSL2**, and run **PyTorch** deep learning workloads on the GPU.
 
+<img width="580" alt="image" src="https://github.com/user-attachments/assets/e5a7ba95-4e8b-4576-a022-086ca05d276d" />
+
 ---
 
 ## Requirements

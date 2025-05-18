@@ -78,6 +78,15 @@ pip install tensorflow==2.15.0
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /"
+
+sudo apt update
+
+sudo apt install libcudnn8 libcudnn8-dev -y
+
+ls /usr/lib/x86_64-linux-gnu/libcudnn*
+
 ```
 
 ## run test

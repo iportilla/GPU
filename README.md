@@ -54,7 +54,7 @@ conda create -n dl-gpu python=3.10
 conda activate dl-gpu
 ```
 
-# Install PyTorch with CUDA support
+### Install PyTorch with CUDA support
 
 ```bash
 conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia

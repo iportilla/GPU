@@ -74,6 +74,10 @@ ls /usr/local/cuda-12.3/lib64/libcufft*
 
 pip uninstall tensorflow -y
 pip install tensorflow==2.15.0
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+
 ```
 
 ## run test

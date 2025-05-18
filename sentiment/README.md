@@ -87,6 +87,10 @@ sudo apt install libcudnn8 libcudnn8-dev -y
 
 ls /usr/lib/x86_64-linux-gnu/libcudnn*
 
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
+TF_CPP_MIN_LOG_LEVEL=0 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
 ```
 
 ## run test

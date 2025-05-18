@@ -4,7 +4,7 @@ This example demonstrates training a simple Convolutional Neural Network (CNN) o
 
 ---
 
-## 🚀 Setup
+## Setup
 
 ### 1. Install dependencies
 

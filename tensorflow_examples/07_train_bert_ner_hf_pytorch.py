@@ -31,7 +31,8 @@ def tokenize_and_align_labels(example):
         else:
             labels.append(-100)
         previous_word_idx = word_idx
-    tokenized_inputs["labels"] = labels
+    #tokenized_inputs["labels"] = labels
+    tokenized_inputs["labels"] = list(map(int, labels))
     return tokenized_inputs
 
 tokenized_dataset = dataset.map(tokenize_and_align_labels, batched=True)

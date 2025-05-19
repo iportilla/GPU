@@ -1,3 +1,6 @@
+from tensorflow.keras import mixed_precision
+mixed_precision.set_global_policy('mixed_float16')
+
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.applications import MobileNetV2
@@ -31,7 +34,7 @@ model = models.Sequential([
     layers.GlobalAveragePooling2D(),
     layers.Dense(128, activation='relu'),
     layers.Dropout(0.3),
-    layers.Dense(num_classes, activation='softmax')
+    layers.Dense(num_classes, activation='softmax', dtype='float32')
 ])
 
 model.compile(optimizer='adam',

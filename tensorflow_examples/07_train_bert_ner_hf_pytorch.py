@@ -1,12 +1,17 @@
-from transformers import AutoTokenizer, AutoModelForTokenClassification, DataCollatorForTokenClassification, TrainingArguments, Trainer
-#from datasets import load_dataset, load_metric
+# train_bert_ner_hf_pytorch.py
+
+from transformers import (
+    AutoTokenizer,
+    AutoModelForTokenClassification,
+    DataCollatorForTokenClassification,
+    TrainingArguments,
+    Trainer
+)
 from datasets import load_dataset
 import evaluate
 import numpy as np
 
-
-
-# Load CoNLL-2003 dataset
+# Load dataset and label info
 dataset = load_dataset("conll2003")
 label_list = dataset["train"].features["ner_tags"].feature.names
 label_to_id = {l: i for i, l in enumerate(label_list)}
@@ -17,34 +22,37 @@ num_labels = len(label_list)
 model_checkpoint = "bert-base-cased"
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 
-# Tokenization and alignment
+# Tokenization and label alignment
 def tokenize_and_align_labels(example):
     tokenized_inputs = tokenizer(example["tokens"], truncation=True, is_split_into_words=True)
-    labels = []
     word_ids = tokenized_inputs.word_ids()
     previous_word_idx = None
+    labels = []
+
     for word_idx in word_ids:
         if word_idx is None:
             labels.append(-100)
         elif word_idx != previous_word_idx:
-            labels.append(example["ner_tags"][word_idx])
+            label = example["ner_tags"][word_idx]
+            labels.append(int(label))
         else:
             labels.append(-100)
         previous_word_idx = word_idx
-    #tokenized_inputs["labels"] = labels
-    tokenized_inputs["labels"] = list(map(int, labels))
+
+    tokenized_inputs["labels"] = labels
     return tokenized_inputs
 
+# Tokenize dataset
 tokenized_dataset = dataset.map(tokenize_and_align_labels, batched=True)
+tokenized_dataset.set_format(type="torch", columns=["input_ids", "attention_mask", "labels"])
 
 # Load model
 model = AutoModelForTokenClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
 
-# Data collator for dynamic padding
+# Data collator
 data_collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
 
-# Metric for evaluation
-#metric = load_metric("seqeval")
+# Metric
 metric = evaluate.load("seqeval")
 
 def compute_metrics(p):
@@ -52,12 +60,12 @@ def compute_metrics(p):
     predictions = np.argmax(predictions, axis=2)
 
     true_predictions = [
-        [id_to_label[p] for (p, l) in zip(prediction, label) if l != -100]
-        for prediction, label in zip(predictions, labels)
+        [id_to_label[p] for (p, l) in zip(pred, lab) if l != -100]
+        for pred, lab in zip(predictions, labels)
     ]
     true_labels = [
-        [id_to_label[l] for (p, l) in zip(prediction, label) if l != -100]
-        for prediction, label in zip(predictions, labels)
+        [id_to_label[l] for (p, l) in zip(pred, lab) if l != -100]
+        for pred, lab in zip(predictions, labels)
     ]
 
     results = metric.compute(predictions=true_predictions, references=true_labels)
@@ -68,7 +76,7 @@ def compute_metrics(p):
         "accuracy": results["overall_accuracy"],
     }
 
-# Training arguments
+# TrainingArguments
 training_args = TrainingArguments(
     output_dir="./ner-bert-hf",
     evaluation_strategy="epoch",
@@ -96,6 +104,6 @@ trainer = Trainer(
 # Train the model
 trainer.train()
 
-# Save the model and tokenizer
+# Save model
 model.save_pretrained("./ner-bert-hf")
 tokenizer.save_pretrained("./ner-bert-hf")

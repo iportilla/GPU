@@ -25,7 +25,7 @@ def tokenize_and_align_labels(example):
     tokenized_inputs = tokenizer(example["tokens"], truncation=True, is_split_into_words=True)
     #tokenized_inputs["labels"] = list(map(int, labels))
     labels = []
-    word_ids = .word_ids()
+    word_ids = tokenized_inputs.word_ids()
     previous_word_idx = None
     for word_idx in word_ids:
         if word_idx is None:

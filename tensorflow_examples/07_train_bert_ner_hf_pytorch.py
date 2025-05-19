@@ -1,6 +1,9 @@
 from transformers import AutoTokenizer, AutoModelForTokenClassification, DataCollatorForTokenClassification, TrainingArguments, Trainer
-from datasets import load_dataset, load_metric
+#from datasets import load_dataset, load_metric
+import evaluate
 import numpy as np
+
+
 
 # Load CoNLL-2003 dataset
 dataset = load_dataset("conll2003")
@@ -39,7 +42,8 @@ model = AutoModelForTokenClassification.from_pretrained(model_checkpoint, num_la
 data_collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
 
 # Metric for evaluation
-metric = load_metric("seqeval")
+#metric = load_metric("seqeval")
+metric = evaluate.load("seqeval")
 
 def compute_metrics(p):
     predictions, labels = p

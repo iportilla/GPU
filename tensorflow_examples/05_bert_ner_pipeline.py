@@ -23,8 +23,9 @@ tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 # Tokenize and align labels
 def tokenize_and_align_labels(example):
     tokenized_inputs = tokenizer(example["tokens"], truncation=True, is_split_into_words=True)
+    #tokenized_inputs["labels"] = list(map(int, labels))
     labels = []
-    word_ids = tokenized_inputs.word_ids()
+    word_ids = .word_ids()
     previous_word_idx = None
     for word_idx in word_ids:
         if word_idx is None:
@@ -34,7 +35,8 @@ def tokenize_and_align_labels(example):
         else:
             labels.append(-100)
         previous_word_idx = word_idx
-    tokenized_inputs["labels"] = labels
+    #tokenized_inputs["labels"] = labels
+    tokenized_inputs["labels"] = list(map(int, labels))
     return tokenized_inputs
 
 tokenized_datasets = dataset.map(tokenize_and_align_labels, batched=True)

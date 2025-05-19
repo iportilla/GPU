@@ -13,6 +13,8 @@ This repository contains deep learning examples using TensorFlow with GPU accele
 ## Requirements
 ```bash
 pip install tensorflow transformers datasets matplotlib seqeval
+
+pip install transformers datasets seqeval
 ```
 
 ## Run

@@ -1,12 +1,10 @@
-# named entity recognition using BERT from Hugging Face
+# 05_bert_ner_tensorflow.py
+# Named Entity Recognition using BERT from Hugging Face (TensorFlow)
 
 import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForTokenClassification, DataCollatorForTokenClassification, create_optimizer
-#from datasets import load_dataset, load_metric
 from datasets import load_dataset
 import evaluate
-from transformers import TrainingArguments
-from tensorflow.keras.callbacks import ModelCheckpoint
 import numpy as np
 
 metric = evaluate.load("seqeval")
@@ -23,7 +21,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 # Tokenize and align labels
 def tokenize_and_align_labels(example):
     tokenized_inputs = tokenizer(example["tokens"], truncation=True, is_split_into_words=True)
-    #tokenized_inputs["labels"] = list(map(int, labels))
     labels = []
     word_ids = tokenized_inputs.word_ids()
     previous_word_idx = None
@@ -35,7 +32,6 @@ def tokenize_and_align_labels(example):
         else:
             labels.append(-100)
         previous_word_idx = word_idx
-    #tokenized_inputs["labels"] = labels
     tokenized_inputs["labels"] = list(map(int, labels))
     return tokenized_inputs
 
@@ -69,4 +65,3 @@ model.fit(train_tfdataset, validation_data=val_tfdataset, epochs=3)
 # Save model
 model.save_pretrained("./ner-bert-tf")
 tokenizer.save_pretrained("./ner-bert-tf")
-

@@ -2,10 +2,13 @@
 
 import tensorflow as tf
 from transformers import AutoTokenizer, TFAutoModelForTokenClassification, DataCollatorForTokenClassification, create_optimizer
-from datasets import load_dataset, load_metric
+#from datasets import load_dataset, load_metric
+import evaluate
 from transformers import TrainingArguments
 from tensorflow.keras.callbacks import ModelCheckpoint
 import numpy as np
+
+metric = evaluate.load("seqeval")
 
 # Load dataset
 dataset = load_dataset("conll2003")
